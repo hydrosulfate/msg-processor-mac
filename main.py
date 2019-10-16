@@ -34,6 +34,7 @@ def load_msg():
                         all_msgs[-1].append(line)
                     else:
                         all_msgs[-1][1]+='\n'+line
+
     return all_msgs
 
 def merge_msgs(all_msgs):
@@ -50,7 +51,10 @@ def merge_msgs(all_msgs):
         else:
             last_line +=msg[1]+'\n'
 
+    if last_line!='':
+        merged_msgs.append([last_name,last_line])
 
+    print (merged_msgs)
     return merged_msgs
 
 def skip_msgs(msgs):
