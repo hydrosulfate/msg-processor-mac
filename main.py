@@ -17,24 +17,32 @@ def get_date(date_text):
         return False,None
 
 def load_msg(date_request):
-    validinput = False
     all_msgs =[]
+    started = False
     with open('./msg_history') as msgs:
         for _,line in enumerate(msgs):
             line = line.rstrip()
             processed = process_line(line)
             if processed[0]:
                 if processed[2] == date_request:
-                    validinput = True
+                    if len(all_msgs) != 0:
+                        if len(all_msgs[-1]) == 1:
+                            all_msgs.pop()
                     all_msgs.append([processed[1]])
+                    started = True
                     continue
-            elif validinput == True:
-                if filter_line(line,all_msgs[-1][0]):
-                    all_msgs.pop()
-                    validinput = False
+            else:
+                if started == False:
                     continue
-                all_msgs[-1].append(line)
-                validinput = False
+                if not filter_line(line,all_msgs[-1][0]):
+                    if len(all_msgs[-1]) == 1:
+                        all_msgs[-1].append(line)
+                    else:
+                        # all_msgs[-1][1]+=''if all_msgs[-1][1]=='\n' else '\n'
+                        all_msgs[-1][1]+=line
+
+    if len(all_msgs[-1]) == 1:
+        all_msgs.pop()
     return all_msgs
 
 def merge_msgs(all_msgs):
@@ -50,7 +58,25 @@ def merge_msgs(all_msgs):
             last_line +=msg[1]+'\n'
         else:
             last_line +=msg[1]+'\n'
+
+
+    if last_line != '':
+        merged_msgs.append([last_name, last_line])
+
+
     return merged_msgs
+
+def skip_msgs(msgs):
+    start = -1
+    end = -1
+    for _,msg in enumerate(msgs):
+        if msg[0]=='拙言':
+            end = _
+            if start == -1:
+                start = _
+
+    return msgs[start:end+1]
+
 
 def write_to_files(msgs):
     detail_file = open('./result_detail.txt','a+')
@@ -65,9 +91,21 @@ def write_to_files(msgs):
     brief_file.close()
 
 def filter_line(line,name):
-    if len(line) <= 3 or '[表情]' in line or (('嗯' in line or '哈' in line or '谢谢' in line)and name != '拙言') or name =='系统消息':
+    if name =='拙言':
+        return False
+    if '[表情]' in line \
+            or  (('[图片]'in line
+                  or len(line) <= 3
+                  or  '嗯' in line
+                  or '哈' in line
+                  or '谢谢' in line
+                or '师父' in line and '辛苦' in line
+                 )) \
+            or name =='系统消息':
         return True
     return False
+
+
 def cleanup():
     for fname in os.listdir('.'):
         if fname.startswith("result"):
@@ -98,7 +136,9 @@ def run_processor():
     print('开始运行。。。')
     msgs = load_msg(date)
     merged_msg = merge_msgs(msgs)
-    write_to_files(merged_msg)
+
+    skipped_msg = skip_msgs(merged_msg)
+    write_to_files(skipped_msg)
     print ('运行结束。。。')
 
 run_processor()
