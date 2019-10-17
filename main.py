@@ -35,6 +35,8 @@ def load_msg():
                     else:
                         all_msgs[-1][1]+='\n'+line
 
+    if len(all_msgs[-1]) == 1:
+        all_msgs.pop()
     return all_msgs
 
 def merge_msgs(all_msgs):
