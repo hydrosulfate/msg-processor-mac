@@ -40,7 +40,6 @@ def load_msg(date_request):
                     else:
                         # all_msgs[-1][1]+=''if all_msgs[-1][1]=='\n' else '\n'
                         all_msgs[-1][1]+=line
-
     if len(all_msgs[-1]) == 1:
         all_msgs.pop()
     return all_msgs
@@ -58,7 +57,6 @@ def merge_msgs(all_msgs):
             last_line +=msg[1]+'\n'
         else:
             last_line +=msg[1]+'\n'
-
 
     if last_line != '':
         merged_msgs.append([last_name, last_line])
