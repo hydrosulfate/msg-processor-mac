@@ -3,15 +3,17 @@ import datetime
 
 def process_line(line):
     l = line.split(' ')
-    date = get_date(l[0])
-    if len(l)>=3 and date[0]:
-        l[2] = l[2].split('(')[0]
-        return True,l[2],date[1]
+    if len(l)<4:
+        return False, None, None
+
+    date = get_date(l[-3])
+    if len(l)>=4 and date[0]:
+        return True,l[0],date[1]
     return False,None,None
 
 def get_date(date_text):
     try:
-        date = datetime.datetime.strptime(date_text, '%Y-%m-%d')
+        date = datetime.datetime.strptime(date_text, '%Y/%m/%d')
         return True,date
     except ValueError:
         return False,None
@@ -91,9 +93,9 @@ def write_to_files(msgs):
 def filter_line(line,name):
     if name =='拙言':
         return False
-    if '[表情]' in line \
-            or  (('[图片]'in line
-                  or len(line) <= 3
+    if '[' in line and ']' in line\
+            or  (('[photo]'in line
+                  or len(line) <= 5
                   or  '嗯' in line
                   or '哈' in line
                   or '谢谢' in line
