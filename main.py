@@ -89,7 +89,7 @@ def filter_line(line,name):
         return False
     if '[表情]' in line \
             or  (('[图片]'in line
-                  or len(line) <= 3
+                  or len(line) <= 4
                   or  '嗯' in line
                   or '哈' in line
                   or '谢谢' in line
