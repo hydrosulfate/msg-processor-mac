@@ -6,14 +6,6 @@ def process_line(line):
     return line.split(":")
 
 
-def is_time_format(date_text):
-    try:
-        time.strptime(date_text, '%H:%M:%S')
-        return True
-    except ValueError:
-        return False
-
-
 def load_msg():
     all_msgs = []
     with open('./msg_history') as msgs:
@@ -28,27 +20,6 @@ def load_msg():
                     all_msgs[-1][1] += processed[1]
 
     return all_msgs
-
-
-def merge_msgs(all_msgs):
-    merged_msgs = []
-    last_name = ''
-    last_line = ''
-    for _, msg in enumerate(all_msgs):
-        if msg[0] != last_name:
-            if _ != 0:
-                merged_msgs.append([last_name, last_line])
-                last_line = ''
-            last_name = msg[0]
-            last_line += msg[1] + '\n'
-        else:
-            last_line += msg[1] + '\n'
-
-    if last_line != '':
-        merged_msgs.append([last_name, last_line])
-
-    print(merged_msgs)
-    return merged_msgs
 
 
 def skip_msgs(msgs):
