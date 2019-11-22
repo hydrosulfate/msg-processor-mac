@@ -60,7 +60,6 @@ def merge_msgs(all_msgs):
     if last_line != '':
         merged_msgs.append([last_name, last_line])
 
-    print(merged_msgs)
     return merged_msgs
 
 
