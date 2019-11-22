@@ -3,12 +3,7 @@ import time
 
 
 def process_line(line):
-    l: str = line.split(' ')
-    if len(l) >= 3:
-        isvalid = is_time_format(l[-1])
-        return isvalid, l[0]
-    else:
-        return False, None
+    return line.split(":")
 
 
 def is_time_format(date_text):
@@ -22,24 +17,17 @@ def is_time_format(date_text):
 def load_msg():
     all_msgs = []
     with open('./msg_history') as msgs:
+        last = ''
         for _, line in enumerate(msgs):
-            line = line.rstrip()
             processed = process_line(line)
-            if processed[0]:
-                if len(all_msgs) != 0:
-                    if len(all_msgs[-1]) == 1:
-                        all_msgs.pop()
-                all_msgs.append([processed[1]])
-                continue
-            else:
-                if not filter_line(line, all_msgs[-1][0]):
-                    if len(all_msgs[-1]) == 1:
-                        all_msgs[-1].append(line)
-                    else:
-                        all_msgs[-1][1] += '\n' + line
+            print(processed)
+            if not filter_line(processed[1],processed[0]):
+                if last!=processed[0]:
+                    all_msgs.append(processed)
+                    last = processed[0]
+                else:
+                    all_msgs[-1][1] +=  processed[1]
 
-    if len(all_msgs[-1]) == 1:
-        all_msgs.pop()
     return all_msgs
 
 
@@ -92,9 +80,9 @@ def write_to_files(msgs):
 def filter_line(line, name):
     if name == '拙言':
         return False
-    if '[表情]' in line \
-            or (('[图片]' in line
-                 or len(line) <= 4
+    if '[' in line  and ']' in line\
+            or ((
+                 len(line) <= 4
                  or '嗯' in line
                  or '哈' in line
                  or '谢谢' in line
@@ -115,8 +103,9 @@ def run_processor():
     cleanup()
     print('开始运行。。。')
     msgs = load_msg()
-    merged_msg = merge_msgs(msgs)
-    skipped_msg = skip_msgs(merged_msg)
+    print(msgs)
+    skipped_msg = skip_msgs(msgs)
+    print(skipped_msg)
     write_to_files(skipped_msg)
     print('运行结束。。。')
 
