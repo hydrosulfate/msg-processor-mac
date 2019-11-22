@@ -20,13 +20,12 @@ def load_msg():
         last = ''
         for _, line in enumerate(msgs):
             processed = process_line(line)
-            print(processed)
-            if not filter_line(processed[1],processed[0]):
-                if last!=processed[0]:
+            if not filter_line(processed[1], processed[0]):
+                if last != processed[0]:
                     all_msgs.append(processed)
                     last = processed[0]
                 else:
-                    all_msgs[-1][1] +=  processed[1]
+                    all_msgs[-1][1] += processed[1]
 
     return all_msgs
 
@@ -80,13 +79,13 @@ def write_to_files(msgs):
 def filter_line(line, name):
     if name == '拙言':
         return False
-    if '[' in line  and ']' in line\
+    if '[' in line and ']' in line \
             or ((
-                 len(line) <= 4
-                 or '嗯' in line
-                 or '哈' in line
-                 or '谢谢' in line
-                 or '师父' in line and '辛苦' in line
+            len(line) <= 4
+            or '嗯' in line
+            or '哈' in line
+            or '谢谢' in line
+            or '师父' in line and '辛苦' in line
     )) \
             or name == '系统消息':
         return True
@@ -103,9 +102,7 @@ def run_processor():
     cleanup()
     print('开始运行。。。')
     msgs = load_msg()
-    print(msgs)
     skipped_msg = skip_msgs(msgs)
-    print(skipped_msg)
     write_to_files(skipped_msg)
     print('运行结束。。。')
 
