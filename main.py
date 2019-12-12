@@ -3,10 +3,17 @@ import time
 
 
 def process_line(line):
+
+    if len(line)== 0:
+        return False,None
+    if line[0] == '"':
+        return False,None
     l: str = line.split(' ')
     if len(l) >= 3:
         isvalid = is_time_format(l[-1])
-        return isvalid, l[0]
+        name = ''.join(l[:-1])
+        # print (name)
+        return isvalid, name
     else:
         return False, None
 
@@ -89,8 +96,11 @@ def write_to_files(msgs):
 
 
 def filter_line(line, name):
-    if name == '拙言':
+    if name == '拙言'  :
         return False
+    if name == '一個像秋天autumn°' or name == '圆滚滚':
+        if '[图片]' not in line:
+            return False
     if '[表情]' in line \
             or (('[图片]' in line
                  or len(line) <= 4
