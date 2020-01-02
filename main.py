@@ -98,7 +98,7 @@ def write_to_files(msgs):
 def filter_line(line, name):
     if name == '拙言'  :
         return False
-    if name == '一個像秋天autumn°' or name == '圆滚滚':
+    if name == '小明' or name == '旋' or name =='Lily' or name =='小sunshine' :
         if '[图片]' not in line:
             return False
     if '[表情]' in line \
@@ -107,6 +107,7 @@ def filter_line(line, name):
                  or '嗯' in line
                  or '哈' in line
                  or '谢谢' in line
+                 or '啦啦啦' in line
                  or '师父' in line and '辛苦' in line
     )) \
             or name == '系统消息':
