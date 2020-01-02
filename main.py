@@ -12,6 +12,7 @@ def load_msg():
         last = ''
         for _, line in enumerate(msgs):
             processed = process_line(line)
+            print (processed)
             if not filter_line(processed[1], processed[0]):
                 if last != processed[0]:
                     all_msgs.append(processed)
@@ -26,7 +27,7 @@ def skip_msgs(msgs):
     start = -1
     end = -1
     for _, msg in enumerate(msgs):
-        if msg[0] == '拙言':
+        if msg[0] == '李金主':
             end = _
             if start == -1:
                 start = _
@@ -40,7 +41,7 @@ def write_to_files(msgs):
 
     for _, msg in enumerate(msgs):
         detail_file.write('{}: {}'.format(msg[0], msg[1]))
-        if (msg[0]) == '拙言':
+        if (msg[0]) == '李金主':
             brief_file.write(msg[1])
 
     detail_file.close()
@@ -48,19 +49,19 @@ def write_to_files(msgs):
 
 
 def filter_line(line, name):
-    if name == '拙言':
+    if name == '李金主':
         return False
-    if '[' in line and ']' in line \
-            or ((
-            len(line) <= 4
-            or '嗯' in line
-            or '哈' in line
-            or '谢谢' in line
-            or '师父' in line and '辛苦' in line
-    )) \
-            or name == '系统消息':
-        return True
-    return False
+    # if '[' in line and ']' in line \
+    #         or ((
+    #         len(line) <= 4
+    #         or '嗯' in line
+    #         or '哈' in line
+    #         or '谢谢' in line
+    #         or '师父' in line and '辛苦' in line
+    # )) \
+    #         or name == '系统消息':
+    #     return True
+    # return False
 
 
 def cleanup():
