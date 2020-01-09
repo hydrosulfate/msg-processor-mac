@@ -12,6 +12,9 @@ def load_msg():
         last = ''
         for _, line in enumerate(msgs):
             processed = process_line(line)
+            if len(processed)==1:
+                all_msgs[-1][1] += processed[0]
+                continue
             print (processed)
             if not filter_line(processed[1], processed[0]):
                 if last != processed[0]:
@@ -74,8 +77,8 @@ def run_processor():
     cleanup()
     print('开始运行。。。')
     msgs = load_msg()
-    skipped_msg = skip_msgs(msgs)
-    write_to_files(skipped_msg)
+    # skipped_msg = skip_msgs(msgs)
+    write_to_files(msgs)
     print('运行结束。。。')
 
 
